@@ -31,3 +31,43 @@ jobs:
       - name: Run model training unit tests
         run: |
           python -mpytest tests/unit_test_train_model.py
+
+  CD:
+    needs: CI
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      
+      # Install Python packages dependencies from requirements.txt file
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      # Run train model script
+      - name: Train model script
+        run: |
+          python train_model.py
+
+      # Upload the trained model as an artifact
+      #echo "You can choose where you want to storage your artifacts"
+      - name: Upload model artifact
+        run: |
+          zip -r model_artifact.zip random_forest_wine_model.pkl
+      
+      # Schedule the execution of the model
+      - name: Schedule execution
+        run: |
+          echo "You can upload your new Airflow DAG to a specific folder"
+      
+      # Execute the model once to test if it does run
+      - name: Run deploy tests
+        run: |
+          echo "Here, you can execute a pytest to check if artifacts and the DAG were uploaded"
+          echo "After this, you can ask Airflow to execute a first model run"
+      

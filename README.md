@@ -1,6 +1,6 @@
 # Esteira GitHub Actions ML
 
-## Visão Geral
+## Visão Geral 
 
 Esta aplicação implementa um pipeline completo de CI/CD para Machine Learning utilizando GitHub Actions. O projeto treina um modelo de classificação Random Forest no dataset Wine do scikit-learn e automatiza todo o processo de integração e deploy contínuo.
 

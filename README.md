@@ -11,11 +11,13 @@ esteira-githubaction-ml/
 ├── .github/
 │   └── workflows/
 │       └── ml_workflow.yml          # Pipeline CI/CD
+├── src/
+│   └── train_model.py               # Script principal de treinamento
+├── model/
+│   └── random_forest_wine_model.pkl # Modelo treinado (gerado)
 ├── tests/
 │   └── unit_test_train_model.py     # Testes unitários
-├── train_model.py                   # Script principal de treinamento
 ├── requirements.txt                 # Dependências Python
-├── random_forest_wine_model.pkl     # Modelo treinado (gerado)
 └── README.md                        # Esta documentação
 ```
 
@@ -36,7 +38,7 @@ esteira-githubaction-ml/
 
 ## Componentes Detalhados
 
-### 1. Script de Treinamento (`train_model.py`)
+### 1. Script de Treinamento (`src/train_model.py`)
 
 #### Funções Principais:
 
@@ -102,7 +104,8 @@ Etapas:
   2. Setup Python 3.9
   3. Instalação de dependências
   4. Treinamento do modelo
-  5. Criaç
+  5. Criação de artefato (zip)
+  6. Preparação para deploy (placeholder)
   7. Testes de deploy (placeholder)
 ```
 
@@ -113,6 +116,12 @@ Etapas:
 - **scikit-learn==1.2.2**: Biblioteca de machine learning
 - **numpy==1.24.3**: Computação numérica
 - **pandas==1.5.3**: Manipulação de dados
+
+### Requisitos do Sistema
+- **Python**: 3.9 ou superior
+- **Sistema Operacional**: Linux, macOS, Windows
+- **Memória**: Mínimo 512MB RAM
+- **Espaço em Disco**: ~50MB para dependências
 
 ## Como Usar
 
@@ -136,11 +145,10 @@ pip install -r requirements.txt
 
 3. **Execute o treinamento:**
 ```bash
-python train_model.py
+python src/train_model.py
 ```
 
-4. **Execute os testes:**ão de artefato (zip)
-  6. Preparação para deploy (placeholder)
+4. **Execute os testes:**
 ```bash
 python -m pytest tests/unit_test_train_model.py
 ```
@@ -162,10 +170,12 @@ git push origin master
 ## Resultados Esperados
 
 ### Modelo Treinado
-- **Arquivo**: `random_forest_wine_model.pkl`
+- **Arquivo**: `model/random_forest_wine_model.pkl`
 - **Tamanho**: ~2KB
 - **Formato**: Pickle serializado
 - **Acurácia**: Varia conforme configuração (tipicamente >90%)
+- **Features**: 13 características químicas do vinho
+- **Target**: 3 classes de vinho (0, 1, 2)
 
 ### Artefatos do Pipeline
 - **model_artifact.zip**: Modelo compactado para deploy
@@ -179,13 +189,27 @@ git push origin master
 python -m pytest tests/ -v
 
 # Logs do treinamento
-python train_model.py
+python src/train_model.py
 ```
 
 ### Logs GitHub Actions
 - **CI Job**: Resultados dos testes unitários
 - **CD Job**: Métricas do modelo e status do deploy
 - **Artefatos**: Downloads disponíveis por 90 dias
+
+## Performance e Métricas
+
+### Métricas do Modelo
+- **Acurácia de Treinamento**: ~100% (devido ao overfitting intencional)
+- **Tempo de Treinamento**: <1 segundo
+- **Tamanho do Dataset**: 178 amostras, 13 features
+- **Tempo de Inferência**: <1ms por predição
+
+### Limitações Conhecidas
+- **Overfitting**: Modelo com max_depth=1 e poucos estimadores
+- **Sem validação**: Não há split treino/teste
+- **Dataset pequeno**: Apenas 178 amostras
+- **Sem normalização**: Features não são normalizadas
 
 ## Extensões Futuras
 
@@ -197,12 +221,17 @@ python train_model.py
 5. **Monitoramento** de drift do modelo
 6. **Versionamento** de modelos com MLflow
 7. **Testes de integração** end-to-end
+8. **Normalização de features** e pré-processamento
+9. **Split treino/validação/teste** adequado
+10. **Métricas adicionais** (precision, recall, F1-score)
 
 ### Integração com Ferramentas
 - **Airflow**: Orquestração de pipelines
 - **MLflow**: Tracking de experimentos
 - **Docker**: Containerização
 - **Kubernetes**: Deploy escalável
+- **Prometheus/Grafana**: Monitoramento de métricas
+- **DVC**: Versionamento de dados
 
 ## Troubleshooting
 
@@ -217,16 +246,40 @@ pip install -r requirements.txt
 **Falha nos testes:**
 ```bash
 # Verificar se arquivo foi gerado
-ls -la *.pkl
+ls -la model/*.pkl
 
 # Executar teste específico
 python -m pytest tests/unit_test_train_model.py::test_model_file_exists -v
+
+# Executar todos os testes com verbose
+python -m pytest tests/ -v
 ```
 
 **Pipeline falha no GitHub:**
 - Verificar sintaxe do YAML
 - Confirmar permissões do repositório
 - Checar logs detalhados na aba Actions
+- Verificar se a branch é `master` (não `main`)
+
+**Erro de import do módulo:**
+```bash
+# Executar testes do diretório raiz
+cd /caminho/para/esteira-githubaction-ml
+python -m pytest tests/
+
+# Ou adicionar PYTHONPATH
+export PYTHONPATH="${PYTHONPATH}:$(pwd)/src"
+python -m pytest tests/
+```
+
+**Modelo não encontrado:**
+```bash
+# Verificar se diretório model/ existe
+mkdir -p model/
+
+# Executar treinamento manualmente
+python src/train_model.py
+```
 
 ## Contribuição
 
@@ -255,9 +308,5 @@ Para dúvidas ou sugestões, abra uma issue no repositório GitHub.
 
 ---
 
-**Última atualização**: $(date)
-<<<<<<< HEAD
+**Última atualização**: $(date)  
 **Versão**: 1.0.0
-=======
-**Versão**: 1.0.0
->>>>>>> 1c5bf81e0dbbe1b555167db4aa8cf2c5510b4aae

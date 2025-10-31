@@ -54,7 +54,7 @@ def main():
     model = train_model(X, y)
 
     #Salvar o modelo treinado
-    save_model(model, 'random_forest_wine_model.pkl')
+    save_model(model, 'model/random_forest_wine_model.pkl')
 
     return
 

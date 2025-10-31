@@ -1,5 +1,12 @@
 import pytest
 import os
+import sys
+from pathlib import Path
+
+# Adiciona o diretório src ao path
+src_path = Path(__file__).parent.parent / 'src'
+sys.path.insert(0, str(src_path))
+
 import train_model
 
 def test_load_dataset_exists():
@@ -35,11 +42,13 @@ def train_and_save_model():
     Fixture para treinar e salvar o modelo antes de executar o teste test_model_file_exists.
 
     Esta função chama a função main() do módulo train para treinar e salvar o modelo.
-    Após o término do teste, remove o arquivo 'model.pkl'.
+    Após o término do teste, remove o arquivo 'random_forest_wine_model.pkl'.
     """
     train_model.main()
     yield
-    os.remove('random_forest_wine_model.pkl')
+    model_path = Path(__file__).parent.parent / 'model' / 'random_forest_wine_model.pkl'
+    if model_path.exists():
+        model_path.unlink()
 
 def test_model_file_exists(train_and_save_model):
     """
@@ -48,4 +57,5 @@ def test_model_file_exists(train_and_save_model):
     Este teste, que depende da fixture train_and_save_model, verificará a existência do arquivo model.pkl no diretório atual.
     Se o arquivo não existir, o teste falhará com uma mensagem indicando que o arquivo model.pkl não foi salvo corretamente.
     """
-    assert os.path.isfile('random_forest_wine_model.pkl'), "O arquivo random_forest_wine_model.pkl não foi salvo corretamente"
+    model_path = Path(__file__).parent.parent / 'model' / 'random_forest_wine_model.pkl'
+    assert model_path.exists(), "O arquivo random_forest_wine_model.pkl não foi salvo corretamente"

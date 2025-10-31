@@ -256,4 +256,8 @@ Para dúvidas ou sugestões, abra uma issue no repositório GitHub.
 ---
 
 **Última atualização**: $(date)
+<<<<<<< HEAD
 **Versão**: 1.0.0
+=======
+**Versão**: 1.0.0
+>>>>>>> 1c5bf81e0dbbe1b555167db4aa8cf2c5510b4aae

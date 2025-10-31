@@ -39,13 +39,13 @@ def train_and_save_model():
     """
     train_model.main()
     yield
-    os.remove('model.pkl')
+    os.remove('random_forest_wine_model.pkl')
 
 def test_model_file_exists(train_and_save_model):
     """
-    Testa se o arquivo model.pkl foi salvo corretamente.
+    Testa se o arquivo random_forest_wine_model.pkl foi salvo corretamente.
 
     Este teste, que depende da fixture train_and_save_model, verificará a existência do arquivo model.pkl no diretório atual.
     Se o arquivo não existir, o teste falhará com uma mensagem indicando que o arquivo model.pkl não foi salvo corretamente.
     """
-    assert os.path.isfile('model.pkl'), "O arquivo model.pkl não foi salvo corretamente"
+    assert os.path.isfile('random_forest_wine_model.pkl'), "O arquivo random_forest_wine_model.pkl não foi salvo corretamente"

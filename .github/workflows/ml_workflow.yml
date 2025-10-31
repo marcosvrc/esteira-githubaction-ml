@@ -58,7 +58,7 @@ jobs:
       #echo "You can choose where you want to storage your artifacts"
       - name: Upload model artifact
         run: |
-          zip -r model_artifact.zip random_forest_wine_model.pkl
+          zip -r model_artifact.zip model/random_forest_wine_model.pkl
       
       # Schedule the execution of the model
       - name: Schedule execution

@@ -52,7 +52,7 @@ jobs:
       # Run train model script
       - name: Train model script
         run: |
-          python train_model.py
+          python src/train_model.py
 
       # Upload the trained model as an artifact
       #echo "You can choose where you want to storage your artifacts"
